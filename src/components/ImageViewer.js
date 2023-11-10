@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
-import Geocoder from 'react-native-geocoding';
-
-// Initialize the Geocoder module with your Google Maps Geocoding API key
-Geocoder.init('YOUR_GOOGLE_MAPS_API_KEY');
+import { getLocation } from './GeolocationService';
 
 const ImageViewer = ({ image }) => {
   const [location, setLocation] = useState('');
 
   useEffect(() => {
-    // Convert the latitude and longitude into a location name
-    Geocoder.from(image.latitude, image.longitude)
-      .then((json) => {
-        var addressComponent = json.results[0].address_components[0];
-        setLocation(addressComponent.long_name);
-      })
-      .catch((error) => console.warn(error));
+    const fetchLocation = async () => {
+      const location = await getLocation();
+      setLocation(location);
+    };
+
+    fetchLocation();
   }, []);
 
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: image.path }} />
-      <Text style={styles.text}>Location: {location}</Text>
+      <Text style={styles.text}>Location: {location ? `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}` : 'Fetching location...'}</Text>
     </View>
   );
 };

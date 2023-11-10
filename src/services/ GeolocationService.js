@@ -1,19 +1,20 @@
-import Geolocation from '@react-native-community/geolocation';
+import * as Location from 'expo-location';
 
 /**
- * Returns a promise that resolves to the current device location.
- * @returns {Promise<Position>} A promise that resolves to the current device location.
+ * Gets the current location of the device.
+ * @returns {Promise<void>} A promise that resolves with the current location of the device.
  */
-export const getCurrentLocation = () => {
-    return new Promise((resolve, reject) => {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                resolve(position);
-            },
-            (error) => {
-                reject(error);
-            },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
-    });
+import * as Location from 'expo-location';
+
+const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    console.log(location);
 };
+
+export default getLocation;

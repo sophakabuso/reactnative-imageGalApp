@@ -21,7 +21,9 @@
     "react-native-image-picker": "^7.0.2",
     "react-native-maps": "1.7.1",
     "react-native-sqlite-storage": "^6.0.1",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-location": "~16.1.0",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

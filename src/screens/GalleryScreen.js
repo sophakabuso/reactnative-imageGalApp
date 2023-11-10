@@ -3,7 +3,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import ImageGrid from '../components/ImageGrid';
 import { getImages, insertImage, deleteImage } from '../services/Database';
 import { captureImage } from '../services/ImageService';
-import { getCurrentLocation } from '../services/GeolocationService';
+import { getLocation } from '../services/GeolocationService'; // Updated import
 
 /**
  * Gallery screen component that displays a list of images and allows the user to add new images.
@@ -22,7 +22,7 @@ const GalleryScreen = () => {
      */
     const addImage = async () => {
         const image = await captureImage({ quality: 0.5 });
-        const location = await getCurrentLocation();
+        const location = await getLocation(); // Updated function call
         const newImage = {
             path: image.uri,
             latitude: location.coords.latitude,
