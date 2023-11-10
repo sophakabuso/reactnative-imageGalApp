@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
-import { getLocation } from './GeolocationService';
+import getLocation from '../services/GeolocationService';
 
 const ImageViewer = ({ image }) => {
   const [location, setLocation] = useState('');

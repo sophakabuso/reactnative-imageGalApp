@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import ImageGrid from '../components/ImageGrid';
 import { getImages, insertImage, deleteImage } from '../services/Database';
-import { captureImage } from '../services/ImageService';
-import { getLocation } from '../services/GeolocationService'; // Updated import
-
+import captureImage from '../services/ImageService';
+import getLocation from '../services/GeolocationService';
 /**
  * Gallery screen component that displays a list of images and allows the user to add new images.
  * @returns {JSX.Element} Gallery screen UI.

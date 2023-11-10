@@ -12,4 +12,4 @@ const ImageScreen = ({ route }) => {
     );
 };
 
-export default ImageScreen
+export default ImageScreen;
