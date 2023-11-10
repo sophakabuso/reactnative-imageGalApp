@@ -10,7 +10,7 @@ import { getCurrentLocation } from '../services/GeolocationService';
  * @returns {JSX.Element} Gallery screen UI.
  */
 const GalleryScreen = () => {
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState([])
 
     useEffect(() => {
         getImages().then((imagesFromDB) => setImages(imagesFromDB));
