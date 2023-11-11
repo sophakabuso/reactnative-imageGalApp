@@ -1,17 +1,10 @@
-import SQLite from 'react-native-sqlite-storage';
+import * as SQLite from 'expo-sqlite';
 
-let db;
-
-export const openDatabase = () => {
-  db = SQLite.openDatabase({
-    name: 'ImageGallery.db',
-    location: 'default',
-  });
-};
+const db = SQLite.openDatabase('ImageGallery.db');
 
 export const createTable = () => {
-  db.transaction((txn) => {
-    txn.executeSql(
+  db.transaction(tx => {
+    tx.executeSql(
       `CREATE TABLE IF NOT EXISTS 
       Images
       (id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -19,36 +12,64 @@ export const createTable = () => {
       latitude REAL, 
       longitude REAL, 
       timestamp TEXT)`,
-      [],
     );
   });
 };
 
 export const insertImage = (image) => {
-  db.transaction((txn) => {
-    txn.executeSql(
+  db.transaction(tx => {
+    tx.executeSql(
       `INSERT INTO Images (path, latitude, longitude, timestamp) VALUES (?, ?, ?, ?)`,
       [image.path, image.latitude, image.longitude, image.timestamp],
+      (_, result) => {
+        console.log("Image inserted successfully");
+      },
+      (_, error) => {
+        console.error("Error inserting image: ", error);
+        return true; // rollback transaction
+      }
     );
   });
 };
 
 export const getImages = () => {
   return new Promise((resolve, reject) => {
-    db.transaction((txn) => {
-      txn.executeSql(`SELECT * FROM Images`, [], (tx, results) => {
-        let images = [];
-        for (let i = 0; i < results.rows.length; ++i) {
-          images.push(results.rows.item(i));
-        }
-        resolve(images);
+    db.transaction(tx => {
+      tx.executeSql(`SELECT * FROM Images`, [], (_, { rows: { _array } }) => {
+        resolve(_array);
       });
     });
   });
 };
 
 export const deleteImage = (id) => {
-  db.transaction((txn) => {
-    txn.executeSql(`DELETE FROM Images WHERE id = ?`, [id]);
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM Images WHERE id = ?`, 
+        [id],
+        (_, result) => {
+          if (result.rowsAffected > 0) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        },
+        (_, error) => {
+          console.error("Error deleting image: ", error);
+          reject(error);
+          return true; // rollback transaction
+        }
+      );
+    });
   });
+};
+
+export const closeDatabase = () => {
+  if (db) {
+    console.log("Closing DB");
+    db._db.close();
+  } else {
+    console.log("Database was not OPENED");
+  }
 };

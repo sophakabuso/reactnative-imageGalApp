@@ -24,7 +24,8 @@
     "react-native-maps": "1.7.1",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-web": "~0.19.6",
-    "setimmediate": "^1.0.5"
+    "setimmediate": "^1.0.5",
+    "expo-sqlite": "~11.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

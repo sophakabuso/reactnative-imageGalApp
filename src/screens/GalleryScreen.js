@@ -4,24 +4,18 @@ import ImageGrid from '../components/ImageGrid';
 import { getImages, insertImage, deleteImage } from '../services/Database';
 import captureImage from '../services/ImageService';
 import getLocation from '../services/GeolocationService';
-/**
- * Gallery screen component that displays a list of images and allows the user to add new images.
- * @returns {JSX.Element} Gallery screen UI.
- */
-const GalleryScreen = () => {
-    const [images, setImages] = useState([])
+
+const GalleryScreen = ({ navigation }) => {
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         getImages().then((imagesFromDB) => setImages(imagesFromDB));
+        navigation.setOptions({ title: 'My Gallery' });
     }, []);
 
-    /**
-     * Adds a new image to the gallery.
-     * @returns {Promise<void>}
-     */
     const addImage = async () => {
         const image = await captureImage({ quality: 0.5 });
-        const location = await getLocation(); // Updated function call
+        const location = await getLocation();
         const newImage = {
             path: image.uri,
             latitude: location.coords.latitude,
@@ -32,11 +26,6 @@ const GalleryScreen = () => {
         setImages((prevImages) => [...prevImages, newImage]);
     };
 
-    /**
-     * Deletes an image from the gallery.
-     * @param {number} id - The ID of the image to delete.
-     * @returns {Promise<void>}
-     */
     const deleteImageById = async (id) => {
         await deleteImage(id);
         setImages((prevImages) => prevImages.filter((image) => image.id !== id));

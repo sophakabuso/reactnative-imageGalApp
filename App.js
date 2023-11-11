@@ -1,13 +1,18 @@
 import 'setimmediate';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import GalleryScreen from './src/screens/GalleryScreen';
 import ImageScreen from './src/screens/ImageScreen';
+import { createTable } from './src/services/Database'; // adjust the path according to your project structure
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    createTable();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Gallery">
