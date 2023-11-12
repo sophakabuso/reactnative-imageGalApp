@@ -8,6 +8,10 @@ import { createTable } from './src/services/Database'; // adjust the path accord
 
 const Stack = createStackNavigator();
 
+/**
+ * The main component of the application.
+ * @returns {JSX.Element} The JSX element representing the application.
+ */
 export default function App() {
   useEffect(() => {
     createTable();
