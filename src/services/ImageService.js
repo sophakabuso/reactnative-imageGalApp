@@ -9,7 +9,7 @@ import * as Permissions from 'expo-permissions';
  */
 const captureImage = async () => {
     try {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
             alert('Sorry, we need camera permissions to make this work!');
             return;
